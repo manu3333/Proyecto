@@ -7,8 +7,6 @@ from flask_user.forms import RegisterForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, validators
 from app.init_app import db
-import datetime
-
 
 
 # Define the User data model. Make sure to add the flask_user.UserMixin !!
@@ -27,10 +25,8 @@ class User(db.Model, UserMixin):
     active = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
     first_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
     last_name = db.Column(db.Unicode(50), nullable=False, server_default=u'')
-
-    # log 
-
-    last_access = db.Column(db.DateTime())
+    studentnum = db.Column(db.Unicode(50), nullable = False, server_default=u'')
+    clase = db.Column(db.Unicode(50),nullable=False , server_default=u'')
 
     # Relationships
     roles = db.relationship('Role', secondary='users_roles',
