@@ -1,0 +1,5 @@
+XSym
+0046
+7aa91f309542e807e6bcbdcca8e0df65
+/Users/mac/miniconda3/lib/python3.5/copyreg.py
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
