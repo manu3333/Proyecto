@@ -1,8 +1,189 @@
 {% extends "common/page_base.html" %}  {# common/page_base.html extends layout.html #}
 
 {% block content %}
+
+  <link href="/static/labelbee/css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="/static/labelbee/css/custom.css" rel="stylesheet" type="text/css">
+
+  <script src="/static/labelbee/js/extern/jquery-ui-1.12.1.custom/external/jquery/jquery.js"></script>
+  <script src="/static/labelbee/js/extern/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+  <link href="/static/labelbee/js/extern/jquery-ui-1.12.1.custom/jquery-ui.css" rel="stylesheet" type="text/css">
+
+ <!--  <script type="text/javascript" src="js/extern/jquery.js"></script> -->
+  <script type="text/javascript" src="/static/labelbee/js/extern/bootstrap.js"></script>
+  <script type="text/javascript" src="/static/labelbee/js/extern/VideoFrame.js"></script>
+  <script type="text/javascript" src="/static/labelbee/js/extern/fabric/dist/fabric.js"></script>
+  <script type="text/javascript" src="/static/labelbee/js/extern/D3/d3.min.js"></script>
+  
+  <script type="text/javascript" src="/static/labelbee/js/labelBee.js"></script>
+
+<script type="text/javascript">
+  document.body.onload = init
+</script>
+
+
 <h1>User page</h1>
 
 <p>This page is accessible to authenticated user (users that have signed in).</p>
+
+
+<table>
+      <tr>
+        <td>
+          <p>
+                <b>Video</b> 
+<!--                 <div class=""> -->
+<!--                 <label for="selectboxVideo" class="primary">Video </label> -->
+                <select id="selectboxVideo" name="video" onchange="selectVideo()" class="btn btn-primary">
+                <option value="/static/labelbee/data/testvideo.mp4" selected>testvideo.mp4</option>
+                <option value="data/36_01_H_160715100000.mp4">36_01_H_160715100000.mp4</option>
+                <option value="data/36_01_H_160715100000.webm">36_01_H_160715100000.webm</option>
+                <option value="data/36_01_H_160715100000.webm">36_01_H_160715100000_IPPP.mp4</option>
+                <option value="data/36_01_H_160715100000_IPPPP_1MB.mp4">36_01_H_160715100000_IPPPP_1MB.mp4</option>
+                <option value="data/36_01_H_160715100000_IPPPP_4MB.mp4">36_01_H_160715100000_IPPPP_4MB.mp4</option>
+                <option value="data/36_01_H_160715100000_copy.mp4">36_01_H_160715100000_copy.mp4</option>
+            </select>
+<!--              </div> -->
+          </p>
+          <p>
+            <!--Change to div-->
+            <button value="Previous minute" onclick="rewind3()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-fast-backward"></span></button>
+            <button value="Previous second" onclick="rewind2()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-backward"></span></button>
+            <button value="Previous frame" onclick="rewind()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-step-backward"></span></button>
+            <button value="Play Backwards" onclick="playPauseVideoBackward()" id="playbackward" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-pause"></span><span class="glyphicon glyphicon-backward"></span></button>
+            <button value="Play" onclick="playPauseVideo()" id="play"  class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-pause"></span><span class="glyphicon glyphicon-play"></span></button>
+            <button value="Next frame" onclick="forward()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-step-forward"></span></button>
+            <button value="Next second" onclick="forward2()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-forward"></span></button>
+            <button value="Next minute" onclick="forward3()" class="btn btn-info" style="height: 33px"><span class="glyphicon glyphicon-fast-forward"></span></button>
+<!--             <input type="button" value="Submit info" onclick="submit_bee()" class="btn btn-info" style="position: inline"> -->
+            <!-- Undo button: disabled due to bugs
+<input type="button" value="Remove obs" onclick="removeDecision()" class="btn btn-info" style="position: inline"
+              id="special">
+ -->
+          </p>
+          
+            <div id="beeInfo" class="">
+            <b>Bee</b> ID <input type="text" size="6" value="" id="I" onkeypress="onKeyDown_IDEdit(event)" onClick="resetCheck()"></input>
+<!--             <div display="inline-block"> -->
+            <div class="checkbox-inline">
+              <label><input type="checkbox" value="" id="F">Fanning</label>
+            </div>
+            <div class="checkbox-inline">
+              <label><input type="checkbox" value="" id="P">Pollen</label>
+            </div>
+            <div class="checkbox-inline">
+              <label><input type="checkbox" value="" id="E">Entering</label>
+            </div>
+            <div class="checkbox-inline">
+              <label><input type="checkbox" value="" id="L">Departing</label>
+            </div>
+<!--             </div> -->
+            <p id="alert"></p>
+            </div>
+
+          <div id="canvasresize" class="ui-widget-content">
+          <div class="canvaswrapper">
+            <canvas id="canvas"></canvas>
+            <canvas id="canvas1" style="border: none"></canvas>
+          </div>
+          </div>
+
+          <video src="" id="video" style="display:none"></video>
+          
+        </td>
+        <td>
+            <div class="panel">
+                <b>Local I/O</b><br/>
+                <label for="loadtags" value="Load Tags" class="btn btn-primary btn-sm">Load Tags</label>
+                <input type="file" value="Load Tags" style="display:none" id="loadtags">
+
+                <input type="button" value="Save JSON" class="btn btn-primary btn-sm" onclick="saveToFile()"  style="display:inline" id="save">
+                <label for="load" value="Load JSON" class="btn btn-primary btn-sm">Load JSON</label>
+                <input type="file" value="Load JSON" style="display:none" id="load">
+
+                <input type="button" value="Save CSV" class="btn btn-default btn-sm" onclick="saveToCSV()"  style="display:inline" id="saveCSV">
+                <input type="button" value="Save Bboxes" class="btn btn-default btn-sm" onclick="saveToBBoxes()"  style="display:inline" id="saveBBoxes">
+            </div>
+            
+            <div class="panel">
+                <b>Server I/O</b><br/>
+                ...
+            </div>
+
+<!-- 
+          <div id="beeInfo" class="panel" style="min-width:180px;">
+            <b>Bee event</b>
+            <p></p>          
+            <p id="alert"></p>
+            ID <input type="text" value="" id="I" onkeypress="onKeyDown_IDEdit(event)" onClick="resetCheck()"></input>
+
+            <br/> Activities:
+            <div class="checkbox">
+              <label><input type="checkbox" value="" id="F">Fanning</label>
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="" id="P">Carrying pollen</label>
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="" id="E">Entering colony</label>
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="" id="L">Departing colony</label>
+            </div>
+ -->
+          
+      <div id="options" class="panel" style="min-width:180px;">
+          <b>Display options</b>
+          <div class="checkbox">
+            <label><input type="checkbox" checked="false" id="checkboxShowTrack" onclick="clickShowTrack()">showTracks</label>
+          </div>
+          <div class="checkbox">
+            <label><input type="checkbox" checked="false" id="showTagsTracks" onclick="onShowTagsTracksChanged()">showTagsTracks</label>
+          </div>
+          <div class="text">
+              <label>Track window<input type="text" value="20" id="trackWindow" onchange="onTrackWindowChanged(event)"></label>
+          </div>
+      </div>
+      
+      <div id="videoInfo" class="panel">
+              <b>Video info</b>
+              <p><div id="videoSize">-</div>
+              <div id="canvasSize">-</div></p>
+              
+              <p>
+              T0 <input type="text" value="2016-07-15T09:59:59.360" size="25" id="startTime" onchange="onStartTimeChanged(event)">
+              <br>fps <input type="text" value="22" size="5" id="fps" onchange="onFPSChanged(event)"></p>
+            
+              <p style="display:none">Bounding Box:</p>
+              <table style="display:none">
+                <tr>
+                  <td><div id="X">X:</div></td>
+                  <td><div id="Y">Y:</div></td>
+                </tr>
+                <tr>
+                  <td><div id="W">Width:</div></td>
+                  <td><div id="H">Height:</div></td>
+                </tr>
+                <tr>
+                  <td><div id="CX">Center X:</div></td>
+                  <td><div id="CY">Center Y:</div></td>
+                </tr>
+              </table>
+              
+              <div id="realTime">Real Time:</div>
+              <div id="vidTime">Video Time:</div>
+              <div class="frame">
+                <span id="currentFrame">Frame: 0</span>
+      </div>
+    </td>
+  </tr>
+  </table>
+  <br/><br/>
+  <svg id="svgVisualize" width="960" height="500"></svg>
+  <br/>
+  <input type="text" style="width:500px;" value="-" id="excludedTags" onchange="onExcludedTagsChanged(event)"><br/>
+  Tag details
+  <div id="tagDetails">-</div>
+  <br/>  <br/>  <br/>
 
 {% endblock %}
