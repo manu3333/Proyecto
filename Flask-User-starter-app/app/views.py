@@ -7,7 +7,11 @@ from flask import redirect, render_template, render_template_string, Blueprint
 from flask import request, url_for
 from flask_user import current_user, login_required, roles_accepted
 from app.init_app import app, db
+import os 
+from datetime import datetime
 from app.models import UserProfileForm
+import json
+
 
 # The Home page is accessible to anyone
 @app.route('/home')
@@ -23,6 +27,12 @@ def home():
 @app.route('/user')
 @login_required  # Limits access to authenticated users
 def user_page():
+    
+    
+    try: 
+        os.makedirs("app/static/upload/"+str(current_user.id),exist_ok=True)
+    except: pass 
+
     return render_template('pages/user_page.html')
 
 @app.route('/login')
@@ -36,12 +46,24 @@ def login():
 def admin_page():
     return render_template('pages/admin_page.html')
 
+@app.route('/ajaxcalc',methods=['POST', 'GET'])
+def ajaxcalc():
+    if request.method=='POST':
+        data=request.get_json()
+        print(data)
+        with open('app/static/upload/'+ str(current_user.id)+'tracks'+str(datetime.utcnow())+'.json', 'w') as outfile:
+            json.dump(data, outfile)
+        return ("ok")
+    else:
+        return ("error")
 
 @app.route('/pages/profile', methods=['GET', 'POST'])
 @login_required
 def user_profile_page():
     # Initialize form
     form = UserProfileForm(request.form, current_user)
+
+    
 
     # Process valid POST
     if request.method == 'POST' and form.validate():

@@ -104,10 +104,16 @@
                 <input type="button" value="Save CSV" class="btn btn-default btn-sm" onclick="saveToCSV()"  style="display:inline" id="saveCSV">
                 <input type="button" value="Save Bboxes" class="btn btn-default btn-sm" onclick="saveToBBoxes()"  style="display:inline" id="saveBBoxes">
             </div>
+
+
             
             <div class="panel">
                 <b>Server I/O</b><br/>
-                ...
+
+                <meta name="csrf-token" content="{{ csrf_token() }}">
+
+                <button  id="test"  class="btn btn-default btn-sm">hola </button>
+               
             </div>
 
 <!-- 
@@ -185,5 +191,43 @@
   Tag details
   <div id="tagDetails">-</div>
   <br/>  <br/>  <br/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+var csrftoken = $('meta[name=csrf-token]').attr('content')
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        }
+    }
+})
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+      
+      //sbtn is id of submit button
+      $('#test').click(function(event) {
+        console.log("entrando")
+        /* Act on the event */
+        
+       $.ajax({
+          url: 'ajaxcalc', //server url
+          type: 'POST',    //passing data as post method
+          contentType: 'application/json', // returning data as json
+          data: JSON.stringify(Tracks),  //form values
+          success:function(json)
+          {
+            alert("success");  //response from the server given as alert message
+
+          }
+        
+        });
+        
+      });
+      
+    });
+    </script>
+
 
 {% endblock %}
