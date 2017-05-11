@@ -47,6 +47,7 @@ def admin_page():
     return render_template('pages/admin_page.html')
 
 @app.route('/ajaxcalc',methods=['POST', 'GET'])
+@login_required
 def ajaxcalc():
     if request.method=='POST':
         data=request.get_json()
