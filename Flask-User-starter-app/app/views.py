@@ -52,7 +52,7 @@ def ajaxcalc():
     if request.method=='POST':
         data=request.get_json()
         print(data)
-        with open('app/static/upload/'+ str(current_user.id)+'tracks'+str(datetime.utcnow())+'.json', 'w') as outfile:
+        with open('app/static/upload/'+ str(current_user.id)+'/tracks'+str(datetime.utcnow())+'.json', 'w') as outfile:
             json.dump(data, outfile)
         return ("ok")
     else:
