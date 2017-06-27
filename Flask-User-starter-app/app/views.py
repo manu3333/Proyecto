@@ -3,14 +3,14 @@
 # Authors: Ling Thio <ling.thio@gmail.com>
 
 
-from flask import redirect, render_template, render_template_string, Blueprint
+from flask import redirect, render_template, render_template_string, Blueprint, jsonify
 from flask import request, url_for
 from flask_user import current_user, login_required, roles_accepted
 from app.init_app import app, db
 import os 
 from datetime import datetime
 from app.models import UserProfileForm
-import json
+import json 
 
 
 # The Home page is accessible to anyone
@@ -61,8 +61,8 @@ def ajaxcalc():
 @app.route ('/tracks', methods =['POST','GET'])
 @login_required
 def Track_list():
-    tracks = os.listdir('/app/static/upload/'+ str(current_user.id))
-    return jsonify(tracks)
+    tracks = jsonify(os.listdir('app/static/upload/'+ str(current_user.id)))
+    return tracks
     
 
 @app.route('/pages/profile', methods=['GET', 'POST'])
