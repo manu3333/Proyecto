@@ -147,8 +147,13 @@ function jsonToServer() {
       //$(document).ready(function() {
       
       //sbtn is id of submit button
+<<<<<<< HEAD
       $//('#test').click(function(event) {
         //console.log("entrando")
+=======
+      //$('#test').click(function(event) {
+        console.log("entrando")
+>>>>>>> 5980fd2876f7224ddfdb5b08fb884a6df9a2b8e0
         /* Act on the event */
         
        $.ajax({
@@ -164,9 +169,15 @@ function jsonToServer() {
         
         });
         
+<<<<<<< HEAD
      // });
       
    // });
+=======
+      //});
+      
+    //});
+>>>>>>> 5980fd2876f7224ddfdb5b08fb884a6df9a2b8e0
 
 }
 

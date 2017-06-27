@@ -58,6 +58,13 @@ def ajaxcalc():
     else:
         return ("error")
 
+@app.route ('/tracks', methods =['POST','GET'])
+@login_required
+def Track_list():
+    tracks = os.listdir('/app/static/upload/'+ str(current_user.id))
+    return jsonify(tracks)
+    
+
 @app.route('/pages/profile', methods=['GET', 'POST'])
 @login_required
 def user_profile_page():
