@@ -144,11 +144,11 @@ function init() {
 
 function jsonToServer() {
 
-      $(document).ready(function() {
+      //$(document).ready(function() {
       
       //sbtn is id of submit button
-      $('#test').click(function(event) {
-        console.log("entrando")
+      $//('#test').click(function(event) {
+        //console.log("entrando")
         /* Act on the event */
         
        $.ajax({
@@ -164,9 +164,9 @@ function jsonToServer() {
         
         });
         
-      });
+     // });
       
-    });
+   // });
 
 }
 
