@@ -3,15 +3,14 @@
 # Authors: Ling Thio <ling.thio@gmail.com>
 
 
-from flask import redirect, render_template, render_template_string, Blueprint, jsonify
+from flask import redirect, render_template, render_template_string, Blueprint
 from flask import request, url_for
 from flask_user import current_user, login_required, roles_accepted
 from app.init_app import app, db
 import os 
 from datetime import datetime
 from app.models import UserProfileForm
-import json 
-#import pandas as pd 
+import json
 
 
 # The Home page is accessible to anyone
@@ -36,16 +35,6 @@ def user_page():
 
     return render_template('pages/user_page.html')
 
-
-# This function loads the json stored in app/static/upload/
-#@app.route('/load_json', methods=['POST','GET'])
-#def load_json():
-#    name = request.get_json()
-#    file = pd.read_json('app/static/upload/'+str(current_user.id)+'/'+name['name'])
-#    return file 
-    
-    
-
 @app.route('/login')
 def login():
     return render_template('pages/login.html')
@@ -63,18 +52,11 @@ def ajaxcalc():
     if request.method=='POST':
         data=request.get_json()
         print(data)
-        with open('app/static/upload/'+str(current_user.id)+'/tracks'+str(datetime.utcnow())+'.json', 'w') as outfile:
+        with open('app/static/upload/'+ str(current_user.id)+'/tracks'+str(datetime.utcnow())+'.json', 'w') as outfile:
             json.dump(data, outfile)
         return ("ok")
     else:
         return ("error")
-
-@app.route ('/tracks', methods =['POST','GET'])
-@login_required
-def Track_list():
-    tracks = jsonify(os.listdir('app/static/upload/'+ str(current_user.id)))
-    return tracks
-    
 
 @app.route('/pages/profile', methods=['GET', 'POST'])
 @login_required

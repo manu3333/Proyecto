@@ -120,62 +120,6 @@ function init() {
     //loadFromFile0('/static/labelbee/data/Tracks-demo.json')
 }
 
-// function load_json() {
-
-// $(document).ready(function() {
-      
-//       
-//       $('#test').click(function(event) {
-//         console.log("buscando")
-//         /* Act on the event */
-
-//         $.ajax({
-//             url: "algo/some.json",
-//             dataType: "json",
-//             success: function(response) {
-//             $.each
-//             informationArray.push(item);
-//     });
-//     informationArray.push("success");
-//   }
-// });
-// }}}
-
-//function serverToJson(Name){
-//   var load_json = {}
-//    $.getJSON( 'load_json' + Name,
-//    function(data) {
-//        load_json = data.data
-//    }
-//);
-  //  Tracks = load_json
-    
-//}
-function jsonToServer() {
-
-      //$(document).ready(function() {
-      
-      //sbtn is id of submit button
-
-        /* Act on the event */
-        
-       $.ajax({
-          url: 'ajaxcalc', //server url
-          type: 'POST',    //passing data as post method
-          contentType: 'application/json', // returning data as json
-          data: JSON.stringify(Tracks),  //form values
-          success:function(json)
-          {
-            alert("success");  //response from the server given as alert message
-
-          }
-        
-        });
-        
-
-
-}
-
 function selectVideo() {
     let file = $('#selectboxVideo')[0].value
     
@@ -299,7 +243,7 @@ function loadFromFile0(fileToRead) {
     });
 }
 function loadFromFile(event) {
-    console.log("loadFromFile: importing from JSON file ",event,"...")
+    console.log("loadFromFile: importing from JSON file ",fileToRead,"...")
 
     fileToRead = event.target.files[0]
 

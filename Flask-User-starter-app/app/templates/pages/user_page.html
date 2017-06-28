@@ -24,8 +24,8 @@
 
 <h1>User page</h1>
 
-<!-- <p>This page is accessible to authenticated user (users that have signed in).</p>
- -->
+<p>This page is accessible to authenticated user (users that have signed in).</p>
+
 
 <table>
       <tr>
@@ -112,10 +112,8 @@
 
                 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                <button  id="test" onclick="jsonToServer()" class="btn btn-primary btn-sm">Save JSON </button>
-
-                <input type="button" value="Load JSON" onclick="window.open('http://127.0.0.1:5000/','popUpWindow','height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');">
-
+                <button  id="test"  class="btn btn-primary btn-sm">Save JSON </button>
+               
             </div>
 
 <!-- 
@@ -204,6 +202,31 @@ $.ajaxSetup({
     }
 })
 </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+      
+      //sbtn is id of submit button
+      $('#test').click(function(event) {
+        console.log("entrando")
+        /* Act on the event */
+        
+       $.ajax({
+          url: 'ajaxcalc', //server url
+          type: 'POST',    //passing data as post method
+          contentType: 'application/json', // returning data as json
+          data: JSON.stringify(Tracks),  //form values
+          success:function(json)
+          {
+            alert("success");  //response from the server given as alert message
+
+          }
+        
+        });
+        
+      });
+      
+    });
+    </script>
 
 
 {% endblock %}
