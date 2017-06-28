@@ -41,7 +41,7 @@ def user_page():
 #@app.route('/load_json', methods=['POST','GET'])
 #def load_json():
 #    name = request.get_json()
-#    file = pd.read_json('app/static/upload/'+name['name'])
+#    file = pd.read_json('app/static/upload/'+str(current_user.id)+'/'+name['name'])
 #    return file 
     
     
