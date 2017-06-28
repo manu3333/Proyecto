@@ -11,6 +11,7 @@ import os
 from datetime import datetime
 from app.models import UserProfileForm
 import json 
+#import pandas as pd 
 
 
 # The Home page is accessible to anyone
@@ -34,6 +35,16 @@ def user_page():
     except: pass 
 
     return render_template('pages/user_page.html')
+
+
+# This function loads the json stored in app/static/upload/
+#@app.route('/load_json', methods=['POST','GET'])
+#def load_json():
+#    name = request.get_json()
+#    file = pd.read_json('app/static/upload/'+name['name'])
+#    return file 
+    
+    
 
 @app.route('/login')
 def login():
