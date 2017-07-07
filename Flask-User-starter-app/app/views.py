@@ -3,7 +3,7 @@
 # Authors: Ling Thio <ling.thio@gmail.com>
 
 
-from flask import redirect, render_template, render_template_string, Blueprint
+from flask import redirect, render_template, render_template_string, Blueprint,jsonify
 from flask import request, url_for
 from flask_user import current_user, login_required, roles_accepted
 from app.init_app import app, db
@@ -11,6 +11,9 @@ import os
 from datetime import datetime
 from app.models import UserProfileForm
 import json
+import pandas as pd
+import numpy as np
+
 
 
 # The Home page is accessible to anyone
@@ -33,7 +36,18 @@ def user_page():
         os.makedirs("app/static/upload/"+str(current_user.id),exist_ok=True)
     except: pass 
 
-    return render_template('pages/user_page.html')
+    tracks = os.listdir('app/static/upload/'+ str(current_user.id))
+    string = "<HTML>"
+
+    for i in tracks:
+        print(url_for('loadtrack', user = str(current_user.id),filename = i))
+        string += "<a href =  " + str(url_for('loadtrack', user = str(current_user.id),filename = i)) + ">"+ i + "</a> <br>" 
+        #print (string)
+    print (string)
+    string += "</HTML>"
+
+    
+    return render_template('pages/user_page.html', tracks= tracks,userid= str(current_user.id))
 
 @app.route('/login')
 def login():
@@ -48,7 +62,7 @@ def admin_page():
 
 @app.route('/ajaxcalc',methods=['POST', 'GET'])
 @login_required
-def ajaxcalc():
+def json_to_server():
     if request.method=='POST':
         data=request.get_json()
         print(data)
@@ -57,6 +71,36 @@ def ajaxcalc():
         return ("ok")
     else:
         return ("error")
+#This function loads the json stored in app/static/upload/
+@app.route('/load_json/<item>', methods=['POST','GET'])
+@login_required
+def load_json(item):
+    print(os.path.isfile('app/static/upload/'+str(current_user.id)+'/'+item))
+    file = pd.read_json('app/static/upload/'+str(current_user.id)+'/'+item)
+    return file.to_json() 
+@app.route ('/tracks', methods =['POST','GET'])
+@login_required
+def Track_list():
+    tracks = os.listdir('app/static/upload/'+ str(current_user.id))
+    string = "<HTML>"
+
+    for i in tracks:
+        print(url_for('loadtrack', user = str(current_user.id),filename = i))
+        string += "<a href =  " + str(url_for('loadtrack', user = str(current_user.id),filename = i)) + ">"+ i + "</a> <br>" 
+        #print (string)
+    print (string)
+    string += "</HTML>"
+
+    return string
+
+@app.route ('/loadtrack/<user>/<filename>', methods = ['GET'])
+def loadtrack(user,filename):
+    return load_json(filename)
+
+
+
+
+
 
 @app.route('/pages/profile', methods=['GET', 'POST'])
 @login_required

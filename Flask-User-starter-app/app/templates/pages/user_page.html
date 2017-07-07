@@ -24,7 +24,7 @@
 
 <h1>User page</h1>
 
-<p>This page is accessible to authenticated user (users that have signed in).</p>
+<!-- <p>This page is accessible to authenticated user (users that have signed in).</p> -->
 
 
 <table>
@@ -112,7 +112,36 @@
 
                 <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                <button  id="test"  class="btn btn-primary btn-sm">Save JSON </button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Load JSON</button>
+
+              <!-- Modal -->
+                  <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">JSON List</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>
+
+                          {% for i in tracks %}
+                           <a onclick = 'jsonFromServer('loadtrack/' + str({{userid}}) + '/' + str({{i}}) )' > {{i}} </a> <br>
+
+                           {% endfor %}                            
+                          
+                          </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <button  id="test"  onclick="jsonToServer()" class="btn btn-primary btn-sm">Save JSON </button>
+
+                <input type="button" value="Load JSON" onclick="window.open('http://127.0.0.1:5000/tracks','popUpWindow','height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');">
                
             </div>
 
@@ -202,31 +231,5 @@ $.ajaxSetup({
     }
 })
 </script>
-<script type="text/javascript">
-    $(document).ready(function() {
-      
-      //sbtn is id of submit button
-      $('#test').click(function(event) {
-        console.log("entrando")
-        /* Act on the event */
-        
-       $.ajax({
-          url: 'ajaxcalc', //server url
-          type: 'POST',    //passing data as post method
-          contentType: 'application/json', // returning data as json
-          data: JSON.stringify(Tracks),  //form values
-          success:function(json)
-          {
-            alert("success");  //response from the server given as alert message
-
-          }
-        
-        });
-        
-      });
-      
-    });
-    </script>
-
 
 {% endblock %}
