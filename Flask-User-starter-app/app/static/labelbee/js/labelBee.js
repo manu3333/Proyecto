@@ -143,7 +143,7 @@ function jsonToServer() {
 
 function jsonFromServer(route){
 
-console.log("loadFromFile: importing from JSON file ",event,"...")
+    console.log("loadFromFile: importing from JSON file ",event,"...")
 
     console.log(route);
 
@@ -151,20 +151,18 @@ console.log("loadFromFile: importing from JSON file ",event,"...")
           url: '/' + route, //server url
           type: 'GET',    //passing data as post method
           contentType: 'application/json', // returning data as json
-          data: JSON.stringify(Tracks),  //form values
+          data:'',
           success:function(json)
           {
 
-            alert("success");  //response from the server given as alert message
 
-            fileToRead = data.data
-            
+            //alert("success");  //response from the server given as alert message
 
-            console.log(fileToRead);
+            console.log('success: json=', json); 
+            Tracks= JSON.parse(json)[0];
+            onFrameChanged();
 
-    var reader = new FileReader();
-    reader.onload = onReaderLoad;
-    reader.readAsText(fileToRead);
+            refreshChronogram();
 
           }
         
@@ -172,11 +170,11 @@ console.log("loadFromFile: importing from JSON file ",event,"...")
 
     
 
-    console.log(fileToRead);
+    // console.log(fileToRead);
 
-    var reader = new FileReader();
-    reader.onload = onReaderLoad;
-    reader.readAsText(fileToRead);
+    // var reader = new FileReader();
+    // reader.onload = onReaderLoad;
+    // reader.readAsText(fileToRead);
 
 }
 
@@ -1876,7 +1874,7 @@ function getValidIDsForFrame(frame) {
     let trackf = Tracks[frame];
     let ids = [];
     for (id in trackf) {
-        if (trackf[id] !== undefined) {
+        if (trackf[id] != null) {
             ids.push(id);
         }
     }

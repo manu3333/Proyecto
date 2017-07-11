@@ -126,7 +126,7 @@
                           <p>
 
                           {% for i in tracks %}
-                           <a onclick = 'jsonFromServer('loadtrack/' + str({{userid}}) + '/' + str({{i}}) )' > {{i}} </a> <br>
+                           <button onclick = "jsonFromServer('loadtrack/' + {{userid}} + '/' + '{{i}}' )" > {{i}} </button> <br>
 
                            {% endfor %}                            
                           

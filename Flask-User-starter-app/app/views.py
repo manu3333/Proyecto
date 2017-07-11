@@ -78,6 +78,7 @@ def load_json(item):
     print(os.path.isfile('app/static/upload/'+str(current_user.id)+'/'+item))
     file = pd.read_json('app/static/upload/'+str(current_user.id)+'/'+item)
     return file.to_json() 
+
 @app.route ('/tracks', methods =['POST','GET'])
 @login_required
 def Track_list():
@@ -94,6 +95,7 @@ def Track_list():
     return string
 
 @app.route ('/loadtrack/<user>/<filename>', methods = ['GET'])
+@login_required
 def loadtrack(user,filename):
     return load_json(filename)
 
