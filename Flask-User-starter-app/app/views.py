@@ -33,9 +33,9 @@ def user_page():
     
     
     try: 
-        os.makedirs("app/static/upload/"+str(current_user.id),exist_ok=True)
-    except: pass 
-
+        os.makedirs("app/static/upload/"+str(current_user.id))
+    except: 
+            pass
     tracks = os.listdir('app/static/upload/'+ str(current_user.id))
     string = "<HTML>"
 
@@ -126,4 +126,3 @@ def user_profile_page():
     # Process GET or invalid POST
     return render_template('pages/user_profile_page.html',
                            form=form)
--
