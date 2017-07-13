@@ -120,6 +120,65 @@ function init() {
     //loadFromFile0('/static/labelbee/data/Tracks-demo.json')
 }
 
+function jsonToServer() {
+
+    //$('#test').click(function(event) {
+    console.log("entrando")
+        /* Act on the event */
+        
+       $.ajax({
+          url: '/ajaxcalc', //server url
+          type: 'POST',    //passing data as post method
+          contentType: 'application/json', // returning data as json
+          data: JSON.stringify(Tracks),  //form values
+          success:function(json)
+          {
+            alert("success");  //response from the server given as alert message
+
+          }
+        
+        });
+
+}
+
+function jsonFromServer(route){
+
+    console.log("loadFromFile: importing from JSON file ",event,"...")
+
+    console.log(route);
+
+    $.ajax({
+          url: '/' + route, //server url
+          type: 'GET',    //passing data as post method
+          contentType: 'application/json', // returning data as json
+          data:'',
+          success:function(json)
+          {
+
+
+            //alert("success");  //response from the server given as alert message
+
+            console.log('success: json=', json); 
+            Tracks= JSON.parse(json)[0];
+            onFrameChanged();
+
+            refreshChronogram();
+
+          }
+        
+        });
+
+    
+
+    // console.log(fileToRead);
+
+    // var reader = new FileReader();
+    // reader.onload = onReaderLoad;
+    // reader.readAsText(fileToRead);
+
+}
+
+
 function selectVideo() {
     let file = $('#selectboxVideo')[0].value
     
@@ -243,9 +302,11 @@ function loadFromFile0(fileToRead) {
     });
 }
 function loadFromFile(event) {
-    console.log("loadFromFile: importing from JSON file ",fileToRead,"...")
+    console.log("loadFromFile: importing from JSON file ",event,"...")
 
     fileToRead = event.target.files[0]
+
+    console.log(fileToRead);
 
     var reader = new FileReader();
     reader.onload = onReaderLoad;
@@ -1813,7 +1874,7 @@ function getValidIDsForFrame(frame) {
     let trackf = Tracks[frame];
     let ids = [];
     for (id in trackf) {
-        if (trackf[id] !== undefined) {
+        if (trackf[id] != null) {
             ids.push(id);
         }
     }
