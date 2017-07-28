@@ -79,7 +79,7 @@ def load_json(item):
     file = pd.read_json('app/static/upload/'+str(current_user.id)+'/'+item)
     return file.to_json() 
 
-@app.route ('/tracks', methods =['POST','GET'])
+@app.route ('/tracks', methods =['GET'])
 @login_required
 def Track_list():
     tracks = os.listdir('app/static/upload/'+ str(current_user.id))
